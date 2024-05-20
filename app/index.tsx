@@ -1,11 +1,15 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Selamat Datang</Text>
-        <Text style={styles.headerText}>Petani Modern!</Text>
+        <View style={styles.headerContent}>
+          <View style={styles.headerTextContent}>
+            <Text style={styles.headerText}>Selamat Datang{'\n'}Petani Modern!</Text>
+          </View>
+          <Image source={require('../assets/images/usericon-up.png')} style={styles.icon}/>
+        </View>
       </View>
       <View style={styles.body}>
         <View style={styles.boxContainer}>
@@ -26,12 +30,28 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     backgroundColor: '#797e2a',
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  headerContent: {
+    flexDirection: 'row',
+    marginTop: 45,
+  },
+  headerTextContent:{
+    alignItems:'center',
+    marginLeft: 10,
+    paddingLeft: 40,
+    marginRight: 'auto',
   },
   headerText: {
     fontSize: 30,
     color: '#FFFFFF',
+  },
+  icon: {
+    alignItems: 'center',
+    width: 50,
+    height: 50,
+    paddingRight: 40,
+    marginRight: 40,
+    marginTop: 20,
   },
   body: {
     flex: 4,

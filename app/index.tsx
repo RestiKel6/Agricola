@@ -24,6 +24,12 @@ export default function Index() {
           <View style={styles.grayBoxHumid}></View>
         </View>
       </View>
+      <View style={styles.bottomNav}>
+        <View style={styles.bottomNavContent}>
+          <Image source={require('../assets/images/home2.png')} style={styles.homeIcon}/>
+          <Image source={require('../assets/images/profil.png')} style={styles.profileIcon}/>
+        </View>
+      </View>
     </View>
   );
 }
@@ -116,5 +122,22 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginLeft: 'auto',
     marginRight: 50
+  },
+  bottomNav:{
+    flex: 1,
+    backgroundColor: '#d9d9d9',
+  },
+  bottomNavContent:{
+    //alignItems: 'center',
+    marginTop: 55,
+    flexDirection: 'row',
+  },
+  homeIcon:{
+    marginLeft: 100,
+    marginRight: 'auto',
+  },
+  profileIcon:{
+    marginLeft: 'auto',
+    marginRight: 50,
   },
 });

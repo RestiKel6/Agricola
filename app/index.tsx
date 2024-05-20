@@ -1,7 +1,9 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useRouter } from 'expo-router';
 
 export default function Index() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -28,7 +30,10 @@ export default function Index() {
       <View style={styles.bottomNav}>
         <View style={styles.bottomNavContent}>
           <Image source={require('../assets/images/home2.png')} style={styles.homeIcon}/>
-          <Image source={require('../assets/images/profil.png')} style={styles.profileIcon}/>
+          <TouchableOpacity            
+          onPress={() => router.push('/login')}>
+              <Image source={require('../assets/images/profil.png')} style={styles.profileIcon}/>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

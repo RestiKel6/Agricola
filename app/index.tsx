@@ -23,8 +23,18 @@ export default function Index() {
         </View>
         <View style={styles.lowerBody}>
           <Text style={styles.bodyText}>Kondisi Perkebunan</Text>
-          <View style={styles.grayBoxSuhu}></View>
-          <View style={styles.grayBoxHumid}></View>
+          <View style={styles.grayBoxSuhu}>
+              <View style={styles.grayBoxSuhuContent}>
+                <Image source={require('../assets/images/temp.png')}/>
+                <Text style={styles.textSuhu}>Suhu Tanah</Text>
+              </View>
+          </View>
+          <View style={styles.grayBoxHumid}>
+            <View style={styles.grayBoxHumidContent}>
+              <Image source={require('../assets/images/humidity.png')}/>
+              <Text style={styles.textHumid}>Kelembapan {'\n'}Udara</Text>
+            </View>
+          </View>
         </View>
       </View>
       <View style={styles.bottomNav}>
@@ -119,6 +129,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9d9d9',
     borderRadius: 8,
     marginTop: 15,
+    alignItems: 'center',
+    //paddingTop: 15,
+    //paddingLeft: 15,
+    justifyContent: 'center',
+  },
+  grayBoxSuhuContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textSuhu:{
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   grayBoxHumid: {
     width: 300,
@@ -127,7 +149,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 50,
     marginLeft: 'auto',
-    marginRight: 50
+    marginRight: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  grayBoxHumidContent:{
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textHumid:{
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   bottomNav:{
     flex: 1,

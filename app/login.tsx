@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const router = useRouter();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <View style={styles.container}>
@@ -14,24 +21,35 @@ export default function Login() {
       </View>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Masukkan Email"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
         keyboardType="email-address"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Masukkan Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!isPasswordVisible}
+        />
+        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.toggleButton}>
+          <Image
+            source={require('../assets/images/eyePassword.png')}
+            style={styles.eyeIcon}
+          />
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={styles.button} activeOpacity={0.7}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <Text style={styles.signUpText}>
-        Don't have an account? <Text style={styles.signUpLink}>Sign Up</Text>
+        Belum Punya Akun?{' '}
+        <TouchableOpacity onPress={() => router.push('/signup')}>
+          <Text style={styles.signUpLink}>Sign Up</Text>
+        </TouchableOpacity>
       </Text>
     </View>
   );
@@ -44,39 +62,64 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingTop: 60,
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
+    width: 120,
+    height: 120,
+    marginBottom: 30,
   },
   headerContainer: {
-    alignItems: 'flex-start',
-    marginBottom: 20,
+    alignItems: 'center',
+    marginBottom: 30,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   subheading: {
     fontSize: 16,
-    textAlign: 'left',
+    color: '#6b6b6b',
   },
   input: {
     width: '100%',
     height: 50,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    borderColor: '#fb6b2b',
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+  },
+  passwordContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fb6b2b',
+    borderRadius: 25,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 50,
+    paddingHorizontal: 15,
+  },
+  toggleButton: {
+    padding: 10,
+  },
+  eyeIcon: {
+    width: 20,
+    height: 20,
+    tintColor: '#fb6b2b',
   },
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#FB6B2B',
-    borderRadius: 4,
+    backgroundColor: '#fb6b2b',
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -88,9 +131,10 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     fontSize: 16,
+    color: '#6b6b6b',
   },
   signUpLink: {
-    color: '#4CAF50',
+    color: '#797E2A',
     fontWeight: 'bold',
   },
 });

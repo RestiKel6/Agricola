@@ -9,7 +9,7 @@ export default function Index() {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View style={styles.headerTextContent}>
-            <Text style={styles.headerText}>Selamat Datang{'\n'}Petani Modern!</Text>
+            <Text style={styles.headerText}>Selamat Datang{'\n'}Petani Modern!!</Text>
           </View>
           <Image source={require('../assets/images/usericon-up.png')} style={styles.icon}/>
         </View>
@@ -25,14 +25,22 @@ export default function Index() {
           <Text style={styles.bodyText}>Kondisi Perkebunan</Text>
           <View style={styles.grayBoxSuhu}>
               <View style={styles.grayBoxSuhuContent}>
-                <Image source={require('../assets/images/temp.png')}/>
-                <Text style={styles.textSuhu}>Suhu Tanah</Text>
+                <Image source={require('../assets/images/temp.png')}style={styles.conditionIcon}/>
+                <View>
+                  <Text style={styles.textSuhu}>Suhu Tanah</Text>
+                  <Text style={styles.value}>21.33°C</Text>
+                  <Text style={styles.status}>Baik!</Text>
+                </View>
               </View>
           </View>
           <View style={styles.grayBoxHumid}>
             <View style={styles.grayBoxHumidContent}>
-              <Image source={require('../assets/images/humidity.png')}/>
-              <Text style={styles.textHumid}>Kelembapan {'\n'}Udara</Text>
+              <Image source={require('../assets/images/humidity.png')}style={styles.conditionIcon}/>
+              <View>
+                <Text style={styles.textHumid}>Kelembapan {'\n'}Udara</Text>
+                <Text style={styles.valueLow}>10%</Text>
+                <Text style={styles.statusLow}>Rendah!</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -68,7 +76,8 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
   },
   headerText: {
-    fontSize: 30,
+    fontSize: 25,
+    fontWeight: 'semibold',
     color: '#FFFFFF',
   },
   icon: {
@@ -123,6 +132,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginLeft: 50,
   },
+  conditionIcon: {
+    width: 50,
+    height: 50,
+    marginRight: 30,
+  },
   grayBoxSuhu: {
     width: 300,
     height: 150,
@@ -141,6 +155,30 @@ const styles = StyleSheet.create({
   textSuhu:{
     fontWeight: 'bold',
     fontSize: 25,
+  },
+  value:{
+    fontSize: 20,
+    marginLeft: 10,
+    fontWeight: 'bold',
+    color: '#797E2A',
+  },
+  valueLow:{
+    fontSize: 20,
+    marginLeft: 10,
+    fontWeight: 'bold',
+    color: '#FB6B2B',
+  },
+  status:{
+    fontSize: 16,
+    marginLeft: 10,
+    color: '#797E2A',
+    fontWeight: 'bold',
+  },
+  statusLow:{
+    fontSize: 16,
+    marginLeft: 10,
+    color: '#FB6B2B',
+    fontWeight: 'bold',
   },
   grayBoxHumid: {
     width: 300,

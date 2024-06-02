@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { FirebaseError } from 'firebase/app';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,6 +13,28 @@ export default function Login() {
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/app/index');
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/wrong-password':
+            Alert.alert("Login Error", "The password is incorrect.");
+            break;
+          case 'auth/user-not-found':
+            Alert.alert("Login Error", "No user found with this email.");
+            break;
+          default:
+            Alert.alert("Login Error", error.message);
+        }
+      } else {
+        Alert.alert("Login Error", "An unexpected error occurred.");
+      }
+    }
   };
 
   return (
@@ -42,7 +67,7 @@ export default function Login() {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+      <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <Text style={styles.signUpText}>

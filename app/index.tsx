@@ -1,45 +1,133 @@
-import React from 'react';
+import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
+import { database } from "./firebase";
+import { get, ref, onValue } from "firebase/database";
+import { useState, useEffect } from "react";
 
+interface SensorData {
+  humidity: number | null;
+  temperatureC: number | null;
+  temperatureF: number | null;
+}
 export default function Index() {
+  const [humidity, setHumidity] = useState(null);
+  const [temperatureC, setTemperatureC] = useState(null);
+  const [temperatureF, setTemperatureF] = useState(null);
+  const [sensorData, setSensorData] = useState<SensorData>({
+    humidity: null,
+    temperatureC: null,
+    temperatureF: null,
+  });
+
+  useEffect(() => {
+    const sensorRef = ref(database, "sensor");
+
+    const unsubscribe = onValue(sensorRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const sensorData = snapshot.val();
+        setSensorData({
+          humidity: parseFloat(sensorData.humidity),
+          temperatureC: parseFloat(sensorData.temperature_C),
+          temperatureF: parseFloat(sensorData.temperature_F),
+        });
+      }
+    });
+
+    // Cleanup the listener on component unmount
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const getHumidityTextStyle = () => {
+    if (sensorData.humidity !== null) {
+      return sensorData.humidity > 70 && sensorData.humidity < 90
+        ? styles.textGreen
+        : styles.textRed;
+    }
+    return {};
+  };
+
+  const getTemperatureCTextStyle = () => {
+    if (sensorData.temperatureC !== null) {
+      return sensorData.temperatureC > 25 && sensorData.temperatureC < 30
+        ? styles.textGreen
+        : styles.textRed;
+    }
+    return {};
+  };
   const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View style={styles.headerTextContent}>
-            <Text style={styles.headerText}>Selamat Datang{'\n'}Petani Modern!!</Text>
+            <Text style={styles.headerText}>
+              Selamat Datang{"\n"}Petani Modern!!
+            </Text>
           </View>
-          <Image source={require('../assets/images/usericon-up.png')} style={styles.icon}/>
+          <Image
+            source={require("../assets/images/usericon-up.png")}
+            style={styles.icon}
+          />
         </View>
       </View>
       <View style={styles.body}>
         <View style={styles.boxContainer}>
           <View style={styles.yellowBox}>
-            <Image source={require('../assets/images/location-icon.png')} style={styles.locationIcon}/>
+            <Image
+              source={require("../assets/images/location-icon.png")}
+              style={styles.locationIcon}
+            />
             <Text style={styles.yellowBoxText}>Jatinangor, Indonesia</Text>
           </View>
         </View>
         <View style={styles.lowerBody}>
           <Text style={styles.bodyText}>Kondisi Perkebunan</Text>
           <View style={styles.grayBoxSuhu}>
-              <View style={styles.grayBoxSuhuContent}>
-                <Image source={require('../assets/images/temp.png')}style={styles.conditionIcon}/>
-                <View>
-                  <Text style={styles.textSuhu}>Suhu Tanah</Text>
-                  <Text style={styles.value}>21.33°C</Text>
-                  <Text style={styles.status}>Baik!</Text>
-                </View>
+            <View style={styles.grayBoxSuhuContent}>
+              <Image
+                source={require("../assets/images/temp.png")}
+                style={styles.conditionIcon}
+              />
+              <View>
+                <Text style={styles.textSuhu}>Suhu</Text>
+                <Text style={[styles.value, getTemperatureCTextStyle()]}>
+                  {sensorData.temperatureC !== null
+                    ? `${sensorData.temperatureC.toFixed(2)}%`
+                    : "Loading..."}
+                </Text>
+                <Text style={[styles.status, getTemperatureCTextStyle()]}>
+                  {sensorData.temperatureC !== null &&
+                  sensorData.temperatureC < 30 &&
+                  sensorData.temperatureC > 25
+                    ? "Baik"
+                    : "Buruk"}
+                </Text>
               </View>
+            </View>
           </View>
           <View style={styles.grayBoxHumid}>
             <View style={styles.grayBoxHumidContent}>
-              <Image source={require('../assets/images/humidity.png')}style={styles.conditionIcon}/>
+              <Image
+                source={require("../assets/images/humidity.png")}
+                style={styles.conditionIcon}
+              />
               <View>
-                <Text style={styles.textHumid}>Kelembapan {'\n'}Udara</Text>
-                <Text style={styles.valueLow}>10%</Text>
-                <Text style={styles.statusLow}>Rendah!</Text>
+                <Text style={styles.textHumid}>Kelembapan {"\n"}Udara</Text>
+                <Text style={[styles.value, getHumidityTextStyle()]}>
+                  {sensorData.humidity !== null
+                    ? `${sensorData.humidity.toFixed(2)}%`
+                    : "Loading..."}
+                </Text>
+                <Text style={[styles.status, getHumidityTextStyle()]}>
+                  {sensorData.humidity !== null &&
+                  sensorData.humidity < 90 &&
+                  sensorData.humidity > 70
+                    ? "Baik"
+                    : "Buruk"}
+                </Text>
               </View>
             </View>
           </View>
@@ -47,10 +135,15 @@ export default function Index() {
       </View>
       <View style={styles.bottomNav}>
         <View style={styles.bottomNavContent}>
-          <Image source={require('../assets/images/home2.png')} style={styles.homeIcon}/>
-          <TouchableOpacity            
-          onPress={() => router.push('/login')}>
-              <Image source={require('../assets/images/profil.png')} style={styles.profileIcon}/>
+          <Image
+            source={require("../assets/images/home2.png")}
+            style={styles.homeIcon}
+          />
+          <TouchableOpacity onPress={() => router.push("/login")}>
+            <Image
+              source={require("../assets/images/profil.png")}
+              style={styles.profileIcon}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -63,25 +156,25 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    backgroundColor: '#797e2a',
+    backgroundColor: "#797e2a",
   },
   headerContent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 45,
   },
-  headerTextContent:{
-    alignItems:'center',
+  headerTextContent: {
+    alignItems: "center",
     marginLeft: 10,
     paddingLeft: 40,
-    marginRight: 'auto',
+    marginRight: "auto",
   },
   headerText: {
     fontSize: 25,
-    fontWeight: 'semibold',
-    color: '#FFFFFF',
+    fontWeight: "semibold",
+    color: "#FFFFFF",
   },
   icon: {
-    alignItems: 'center',
+    alignItems: "center",
     width: 50,
     height: 50,
     paddingRight: 40,
@@ -90,7 +183,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 4,
-    backgroundColor: '#EBE3D5',
+    backgroundColor: "#EBE3D5",
     //justifyContent: 'flex-start',
     //alignItems: 'center',
   },
@@ -101,17 +194,17 @@ const styles = StyleSheet.create({
   },
   boxContainer: {
     //justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   yellowBox: {
     width: 300,
     height: 50,
-    backgroundColor: '#fec459',
+    backgroundColor: "#fec459",
     borderRadius: 8,
-    marginBottom: 10, 
+    marginBottom: 10,
     //justifyContent: 'center',
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingTop: 13,
     paddingLeft: 10,
   },
@@ -120,15 +213,15 @@ const styles = StyleSheet.create({
   },
   yellowBoxText: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
     marginLeft: 10,
   },
   bodyText: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
     //justifyContent: 'center'
   },
-  lowerBody:{
+  lowerBody: {
     marginTop: 15,
     marginLeft: 50,
   },
@@ -140,80 +233,86 @@ const styles = StyleSheet.create({
   grayBoxSuhu: {
     width: 300,
     height: 150,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: "#d9d9d9",
     borderRadius: 8,
     marginTop: 15,
-    alignItems: 'center',
+    alignItems: "center",
     //paddingTop: 15,
     //paddingLeft: 15,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   grayBoxSuhuContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
-  textSuhu:{
-    fontWeight: 'bold',
+  textSuhu: {
+    fontWeight: "bold",
     fontSize: 25,
   },
-  value:{
+  value: {
     fontSize: 20,
     marginLeft: 10,
-    fontWeight: 'bold',
-    color: '#797E2A',
+    fontWeight: "bold",
+    color: "#797E2A",
   },
-  valueLow:{
+  valueLow: {
     fontSize: 20,
     marginLeft: 10,
-    fontWeight: 'bold',
-    color: '#FB6B2B',
+    fontWeight: "bold",
+    color: "#FB6B2B",
   },
-  status:{
+  status: {
     fontSize: 16,
     marginLeft: 10,
-    color: '#797E2A',
-    fontWeight: 'bold',
+    color: "#797E2A",
+    fontWeight: "bold",
   },
-  statusLow:{
+  statusLow: {
     fontSize: 16,
     marginLeft: 10,
-    color: '#FB6B2B',
-    fontWeight: 'bold',
+    color: "#FB6B2B",
+    fontWeight: "bold",
   },
   grayBoxHumid: {
     width: 300,
     height: 150,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: "#d9d9d9",
     borderRadius: 8,
     marginTop: 50,
-    marginLeft: 'auto',
+    marginLeft: "auto",
     marginRight: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  grayBoxHumidContent:{
-    flexDirection: 'row',
-    alignItems: 'center',
+  grayBoxHumidContent: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  textHumid:{
-    fontWeight: 'bold',
+  textHumid: {
+    fontWeight: "bold",
     fontSize: 25,
   },
-  bottomNav:{
+  bottomNav: {
     flex: 1,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: "#d9d9d9",
+    height: 2,
   },
-  bottomNavContent:{
+  bottomNavContent: {
     //alignItems: 'center',
-    marginTop: 55,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
-  homeIcon:{
+  homeIcon: {
     marginLeft: 100,
-    marginRight: 'auto',
+    marginRight: "auto",
   },
-  profileIcon:{
-    marginLeft: 'auto',
+  profileIcon: {
+    marginLeft: "auto",
     marginRight: 50,
+  },
+  textGreen: {
+    color: "green",
+  },
+  textRed: {
+    color: "red",
   },
 });

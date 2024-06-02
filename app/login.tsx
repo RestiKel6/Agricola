@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { useRouter } from "expo-router";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const router = useRouter();
 
@@ -14,7 +21,17 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/images/logoAgricola.png')} style={styles.logo} />
+      <TouchableOpacity onPress={() => router.push("/")}>
+        <Image
+          source={require("../assets/images/arrow.png")}
+          style={styles.back}
+        />
+      </TouchableOpacity>
+      
+      <Image
+        source={require("../assets/images/logoAgricola.png")}
+        style={styles.logo}
+      />
       <View style={styles.headerContainer}>
         <Text style={styles.heading}>Login</Text>
         <Text style={styles.subheading}>Login to your existing account</Text>
@@ -35,9 +52,12 @@ export default function Login() {
           onChangeText={setPassword}
           secureTextEntry={!isPasswordVisible}
         />
-        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.toggleButton}>
+        <TouchableOpacity
+          onPress={togglePasswordVisibility}
+          style={styles.toggleButton}
+        >
           <Image
-            source={require('../assets/images/eyePassword.png')}
+            source={require("../assets/images/eyePassword.png")}
             style={styles.eyeIcon}
           />
         </TouchableOpacity>
@@ -45,12 +65,14 @@ export default function Login() {
       <TouchableOpacity style={styles.button} activeOpacity={0.7}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <Text style={styles.signUpText}>
-        Belum Punya Akun?{' '}
-        <TouchableOpacity onPress={() => router.push('/signup')}>
-          <Text style={styles.signUpLink}>Sign Up</Text>
-        </TouchableOpacity>
-      </Text>
+      <View style={{flexDirection: 'row', alignItems: 'center' , justifyContent: 'center'}}>
+        <Text style={styles.signUpText}>
+          Belum Punya Akun?{" "}
+        </Text>
+        <TouchableOpacity onPress={() => router.push("/signup")}>
+            <Text style={styles.signUpLink}>Sign Up</Text>
+          </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -58,9 +80,9 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 60,
   },
@@ -70,36 +92,36 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   headerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 30,
   },
   heading: {
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   subheading: {
     fontSize: 16,
-    color: '#6b6b6b',
+    color: "#6b6b6b",
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 50,
     borderWidth: 1,
-    borderColor: '#fb6b2b',
+    borderColor: "#fb6b2b",
     borderRadius: 25,
     paddingHorizontal: 15,
     marginBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   passwordContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: '#fb6b2b',
+    borderColor: "#fb6b2b",
     borderRadius: 25,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginBottom: 20,
   },
   passwordInput: {
@@ -113,28 +135,35 @@ const styles = StyleSheet.create({
   eyeIcon: {
     width: 20,
     height: 20,
-    tintColor: '#fb6b2b',
+    tintColor: "#fb6b2b",
+  },
+  back: {
+    backgroundColor: "red",
   },
   button: {
-    width: '100%',
+    width: "100%",
     height: 50,
-    backgroundColor: '#fb6b2b',
+    backgroundColor: "#fb6b2b",
     borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 20,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   signUpText: {
     fontSize: 16,
-    color: '#6b6b6b',
+    color: "#6b6b6b",
+    alignItems: "center",
+    justifyContent: "center",
   },
   signUpLink: {
-    color: '#797E2A',
-    fontWeight: 'bold',
+    color: "#797E2A",
+    fontWeight: "bold",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

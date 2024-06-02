@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -17,6 +19,29 @@ export default function SignUp() {
 
   const toggleConfirmPasswordVisibility = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
+
+  const handleSignUp = async () => {
+    console.log('handleSignUp called');
+    if (password !== confirmPassword) {
+      Alert.alert("Password Error", "Passwords do not match");
+      return;
+    }
+
+    try {
+      console.log('Attempting to create user with email:', email);
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User created successfully');
+      Alert.alert("Success", "Account created successfully. Please log in.");
+      router.push('/login');
+    } catch (error) {
+      console.log('Error during sign up:', error);
+      if (error instanceof Error) {
+        Alert.alert("Signup Error", error.message);
+      } else {
+        Alert.alert("Signup Error", "An unexpected error occurred.");
+      }
+    }
   };
 
   return (
@@ -64,7 +89,7 @@ export default function SignUp() {
           <Image source={require('../assets/images/eyePassword.png')} style={styles.eyeIcon} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+      <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
       <Text style={styles.signInText}>

@@ -16,10 +16,18 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
+    if (email.trim() === '' || password.trim() === '') {
+      Alert.alert("Login Error", "Email and password fields cannot be empty.");
+      return;
+    }
+  
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push('/app/index');
+      console.log('Attempting to log in with email:', email);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log('Login successful');
+      router.push('/profile');
     } catch (error) {
+      console.log('Login error:', error);
       if (error instanceof FirebaseError) {
         switch (error.code) {
           case 'auth/wrong-password':

@@ -46,8 +46,7 @@ export default function Profile() {
         </View>
       </View>
       <View style={styles.profilePicContainer}>
-        <View style={styles.profilePic}>
-        </View>
+        {/*<View style={styles.profilePic}>*/}
       </View>
       <View style={styles.bottomNav}>
         <View style={styles.bottomNavContent}>

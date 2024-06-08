@@ -293,21 +293,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   bottomNav: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: "#d9d9d9",
-    height: 2,
+    height: 70,
   },
   bottomNavContent: {
     //alignItems: 'center',
     flexDirection: "row",
+    marginTop: 15,
   },
   homeIcon: {
-    marginLeft: 100,
+    marginLeft: 150,
     marginRight: "auto",
   },
   profileIcon: {
     marginLeft: "auto",
-    marginRight: 50,
+    marginRight: 130,
   },
   textGreen: {
     color: "green",

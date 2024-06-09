@@ -135,10 +135,12 @@ export default function Index() {
       </View>
       <View style={styles.bottomNav}>
         <View style={styles.bottomNavContent}>
-          <Image
-            source={require("../assets/images/home2.png")}
-            style={styles.homeIcon}
-          />
+          <TouchableOpacity onPress={() => router.push("/home")}>
+            <Image
+              source={require("../assets/images/home2.png")}
+              style={styles.homeIcon}
+            />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push("/login")}>
             <Image
               source={require("../assets/images/profil.png")}
@@ -298,17 +300,18 @@ const styles = StyleSheet.create({
     height: 70,
   },
   bottomNavContent: {
-    //alignItems: 'center',
     flexDirection: "row",
-    marginTop: 15,
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: "100%",
   },
   homeIcon: {
-    marginLeft: 150,
-    marginRight: "auto",
+    width: 50,
+    height: 50,
   },
   profileIcon: {
-    marginLeft: "auto",
-    marginRight: 130,
+    width: 50,
+    height: 50,
   },
   textGreen: {
     color: "green",
